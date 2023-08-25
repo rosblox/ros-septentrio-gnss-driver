@@ -7,5 +7,4 @@ docker run -it --rm \
 --ipc=host --pid=host \
 --env UID=$(id -u) \
 --env GID=$(id -g) \
---volume ./resources/rover_node.yaml:/opt/ros/humble/share/septentrio_gnss_driver/config/rover_node.yaml \
 ghcr.io/rosblox/${REPOSITORY_NAME}:humble

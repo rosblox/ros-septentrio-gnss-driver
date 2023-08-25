@@ -15,9 +15,7 @@ COPY ros_entrypoint.sh /ros_entrypoint.sh
 
 WORKDIR /colcon_ws
 
-# Set package's launch command
-ENV LAUNCH_COMMAND='ros2 launch septentrio_gnss_driver rover_node.launch.py'
+ENV LAUNCH_COMMAND='ros2 run septentrio_gnss_driver septentrio_gnss_driver_node --ros-args -p device:=tcp://192.168.60.1:28784 -p polling_period.pvt:=40'
 
-# Create build and run aliases
 RUN echo 'alias run="su - ros /run.sh"' >> /etc/bash.bashrc && \
     echo "source /opt/ros/humble/setup.bash; $LAUNCH_COMMAND" >> /run.sh && chmod +x /run.sh
