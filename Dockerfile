@@ -1,4 +1,4 @@
-ARG ROS_DISTRO
+ARG ROS_DISTRO=humble
 
 FROM ros:${ROS_DISTRO}-ros-core
 
@@ -15,7 +15,9 @@ COPY ros_entrypoint.sh /ros_entrypoint.sh
 
 WORKDIR /colcon_ws
 
-ENV LAUNCH_COMMAND='ros2 run septentrio_gnss_driver septentrio_gnss_driver_node --ros-args -p device:=tcp://192.168.60.1:28784 -p polling_period.pvt:=40'
+ENV LAUNCH_COMMAND='ros2 run septentrio_gnss_driver septentrio_gnss_driver_node --ros-args -p device:=tcp://192.168.60.1:28784 -p polling_period.pvt:=40 -p frame_id:="gnss_link" -p rtk_settings.ip_server_1.send_gga:="sec1" -p rtk_settings.ip_server_1.port:=6666 -p rtk_settings.ip_server_1.id:="IPS1"'
 
-RUN echo 'alias run="su - ros /run.sh"' >> /etc/bash.bashrc && \
+RUN echo 'alias build="colcon build --symlink-install  --cmake-args -DCMAKE_BUILD_TYPE=Release --event-handlers console_direct+ "' >> /etc/bash.bashrc && \
+    echo 'alias run="su - ros /run.sh"' >> /etc/bash.bashrc && \
     echo "source /opt/ros/humble/setup.bash; $LAUNCH_COMMAND" >> /run.sh && chmod +x /run.sh
+
